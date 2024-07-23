@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { loginSliceState, registerUser, user } from "../types/types";
+import { createPostData, loginSliceState, registerUser } from "../types/types";
 import axios from "../instanceAxios";
 import { storageUser } from "../StorageUser";
+import { AxiosResponse } from "axios";
 
 type valueType = {
   email: string;
@@ -54,6 +55,19 @@ export const fetchRemovePost = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await axios.delete(`/posts/${id}`).then((res) => res);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCreate = createAsyncThunk(
+  "posts/fetchCreate",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      console.log()
+      const response = await axios.delete(`/posts`, data).then((res) => res);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -144,9 +158,19 @@ export const authReducer = createSlice({
     builder.addCase(fetchRemovePost.rejected, (state, action) => {
       state.loading = "failed";
     });
+    builder.addCase(fetchCreate.pending, (state) => {
+      state.loading = "pending";
+      state.err = null;
+    });
+    builder.addCase(fetchCreate.fulfilled, (state, action) => {
+      state.loading = "succeeded";
+      console.log(action.payload);
+    });
+    builder.addCase(fetchCreate.rejected, (state, action) => {
+      state.loading = "failed";
+    });
   },
 });
-
 // Action creators are generated for each case reducer function
 export const { authChange, removeUserReducer } = authReducer.actions;
 

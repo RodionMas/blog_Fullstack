@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 //login
 export interface loginSliceState {
   user: {
@@ -54,3 +56,14 @@ export interface postsSliceState {
 export type createPost = {
   updatedAt: string;
 };
+
+export interface ChildProps {
+  wantDel: any;
+  setDel: Dispatch<SetStateAction<boolean>>;
+}
+export type createPostData = {
+  title: string,
+  tags: string[],
+  text: string,
+  imageUrl?: string,
+}

@@ -23,7 +23,9 @@ const Post: React.FC<post> = ({
   viewsCount,
 }: post) => {
   const id: string = useSelector(selectAuth).user?._id;
-
+  const wontDelete = () => {
+    
+  }
   const appDispatch = useAppDispatch()
   return (
     <div className="blog">

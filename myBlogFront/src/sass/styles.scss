@@ -82,14 +82,14 @@ body {
       display: flex;
       align-items: center;
     }
-    .create-blog{
+    .create-blog {
       color: #4561ed;
       box-shadow: 0 0 0 1px #4561ed;
       padding: 10px 15px;
       border-radius: 5px;
       margin-left: 10px;
       transition: all 0.2s;
-      &:hover{
+      &:hover {
         background-color: #4561ed;
         color: #fff;
       }
@@ -241,11 +241,11 @@ body {
       }
       .blog-all-text {
         margin-left: 76px;
-        .author-text{
+        .author-text {
           display: -webkit-box;
           -webkit-box-orient: vertical;
           overflow: hidden;
-          -webkit-line-clamp: 3; /* Количество строк */
+          -webkit-line-clamp: 3;
           max-width: 565px;
         }
         .link-title-blogs {
@@ -462,9 +462,66 @@ body {
   background-color: #fff;
   margin-top: 30px;
   border-radius: 5px;
+  position: relative;
+  .handle-save {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    padding: 10px 15px;
+    background-color: #4561ed;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+  }
   .title-block {
     display: flex;
     flex-direction: column;
+    position: relative;
+    .MessageDel {
+      position: absolute;
+      right: 40px;
+      top: 130px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+      padding: 10px;
+      .del-block {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+      }
+      .del-yes {
+        background-color: #4561ed;
+        color: #fff;
+        margin-right: 5px;
+      }
+      .del-no {
+        margin-left: 5px;
+        background-color: #232323;
+        color: #fff;
+      }
+      button {
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+    .post-img {
+      margin: 20px 0;
+    }
+    .close {
+      position: absolute;
+      top: 85px;
+      right: 23px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border-radius: 50%;
+      background: #fff;
+      // display: block;
+    }
+
     input {
       border: none;
     }
@@ -582,4 +639,10 @@ body {
 .not-found {
   padding-top: 40px;
   text-align: center;
+}
+
+.MessageDel {
+  .del-block {
+    display: flex;
+  }
 }
