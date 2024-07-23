@@ -49,6 +49,18 @@ export const fetchGetMe = createAsyncThunk(
   }
 );
 
+export const fetchRemovePost = createAsyncThunk(
+  "posts/fetchRemovePost",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/posts/${id}`).then((res) => res);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState: loginSliceState = {
   user: storageUser(),
   loading: "idle",
@@ -63,6 +75,14 @@ export const authReducer = createSlice({
     authChange: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload;
     },
+    removeUserReducer: (state) => {
+      state.user = {
+        email: "",
+        password: "",
+        fullName: "",
+        token: '',
+      };
+    }
   },
   extraReducers(builder) {
     builder.addCase(fetchLogin.pending, (state) => {
@@ -113,10 +133,21 @@ export const authReducer = createSlice({
         state.err = "error";
       }
     });
+    builder.addCase(fetchRemovePost.pending, (state) => {
+      state.loading = "pending";
+      state.err = null;
+    });
+    builder.addCase(fetchRemovePost.fulfilled, (state, action) => {
+      state.loading = "succeeded";
+      console.log(action.payload);
+    });
+    builder.addCase(fetchRemovePost.rejected, (state, action) => {
+      state.loading = "failed";
+    });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { authChange } = authReducer.actions;
+export const { authChange, removeUserReducer } = authReducer.actions;
 
 export default authReducer.reducer;

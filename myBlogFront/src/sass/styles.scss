@@ -241,6 +241,13 @@ body {
       }
       .blog-all-text {
         margin-left: 76px;
+        .author-text{
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          -webkit-line-clamp: 3; /* Количество строк */
+          max-width: 565px;
+        }
         .link-title-blogs {
           h1 {
             &:hover {

@@ -11,7 +11,7 @@ const BlogsNew: React.FC = () => {
   const { posts } = useSelector(selectPosts);
   React.useEffect(() => {
     appDispatch(fetchPosts());
-  }, []);
+  }, [posts]);
   return (
     <div className="wrapper-blogs">
       {posts &&

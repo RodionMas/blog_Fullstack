@@ -1,6 +1,7 @@
 //login
 export interface loginSliceState {
   user: {
+    [x: string]: string;
     email: string;
     password: string;
     fullName: string;

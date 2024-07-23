@@ -38,6 +38,7 @@ const CreatePost: React.FC = () => {
     ];
     const [value, setValue] = React.useState("");
     const { token } = useSelector(selectAuth).user
+    console.log(value)
     if (!token) {
         return <Navigate to={`/login`} />
     }

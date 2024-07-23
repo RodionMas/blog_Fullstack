@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectAuth } from "../../Selectors/selectors";
 import door from '../../assets/img/open-door.png'
-import { authChange } from "../../store/AuthSlice";
+import { authChange, removeUserReducer } from "../../store/AuthSlice";
 
 const Header: React.FC = () => {
     const dispatch = useDispatch()
     let { isAuth } = useSelector(selectAuth);
     const user = useSelector(selectAuth).user;
     const removeUser = () => {
-        window.localStorage.removeItem('user')
+        localStorage.removeItem('user')
         dispatch(authChange(false))
+        dispatch(removeUserReducer())
     }
     React.useEffect(() => {
         const json = JSON.stringify(user)
@@ -20,7 +21,6 @@ const Header: React.FC = () => {
             dispatch(authChange(true))
         }
     }, [user])
-
     return (
         <header className="header">
             <div className="wrapper">
