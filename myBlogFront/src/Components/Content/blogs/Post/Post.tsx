@@ -10,8 +10,8 @@ import { createPostDate } from "../../../../utils/createPostDate";
 import { post } from "../../../../types/types";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../../../Selectors/selectors";
-import { useAppDispatch } from "../../../../store/PostsSlice";
-import { fetchRemovePost } from "../../../../store/AuthSlice";
+import { fetchPosts, useAppDispatch } from "../../../../store/PostsSlice";
+import { fetchRemovePost, fetchUpdate } from "../../../../store/AuthSlice";
 const Post: React.FC<post> = ({
   _id,
   imageUrl,
@@ -23,16 +23,17 @@ const Post: React.FC<post> = ({
   viewsCount,
 }: post) => {
   const id: string = useSelector(selectAuth).user?._id;
-  const wontDelete = () => {
-    
-  }
   const appDispatch = useAppDispatch()
   return (
     <div className="blog">
       {id === user._id && (
         <div className="edit-post">
-          <img onClick={() => appDispatch(fetchRemovePost(_id))} src={close} className="close" alt="close" />
-          <Link to={`/create`}>
+          <img onClick={async () => {
+            appDispatch(fetchRemovePost(_id))
+            appDispatch(fetchPosts());
+          }
+            } src={close} className="close" alt="close" />
+          <Link to={`/update`} onClick={() => appDispatch(fetchUpdate(_id))}>
             <img src={pencil} className="edit" alt="edit" />
           </Link>
         </div>

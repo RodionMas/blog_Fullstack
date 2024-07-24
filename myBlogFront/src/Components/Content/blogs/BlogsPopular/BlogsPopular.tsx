@@ -11,7 +11,7 @@ const BlogsPopular: React.FC = () => {
             {posts &&
                 posts.map((post: post) => {
                     return (
-                        post.viewsCount > 45 && <Post key={post._id} {...post} />
+                        post.viewsCount > 20 && <Post key={post._id} {...post} />
                     );
                 })}
         </div>

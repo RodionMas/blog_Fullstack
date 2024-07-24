@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../Selectors/selectors";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/PostsSlice";
 import { fetchCreate } from "../../store/AuthSlice";
 import axios from "../../instanceAxios";
@@ -51,6 +51,7 @@ const CreatePost: React.FC = () => {
   const { token } = useSelector(selectAuth).user;
   const quillRef = React.useRef<any>(null);
   const inpRef = React.useRef<any>(null);
+  const navigate = useNavigate()
   if (!token) {
     return <Navigate to={`/login`} />;
   }
@@ -69,7 +70,7 @@ const CreatePost: React.FC = () => {
       console.warn(error);
     }
   };
-  const handleSave = () => {
+  const handleSave = async () => {
     const editor = quillRef.current.getEditor();
     const plainText = editor.getText().trim();
     const postData: createPostData = {
@@ -79,8 +80,13 @@ const CreatePost: React.FC = () => {
     };
     if (img) {
         postData.imageUrl = `http://localhost:4444${img}` 
+        const data = await appDispatch(fetchCreate(postData));
+        navigate('/new')
+        return data;
     }
-    return appDispatch(fetchCreate(postData));
+    const data = await appDispatch(fetchCreate(postData));
+    navigate('/new')
+    return data
   };
   return (
     <div className="create-post">

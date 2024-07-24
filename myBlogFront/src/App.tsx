@@ -10,6 +10,7 @@ import CreatePost from './Components/CreatePost/CreatePost';
 import Login from './Components/Login/Login';
 import Registration from './Components/Registration/Registration';
 import NotFound from './Components/NotFound/NotFound';
+import UpdatePost from './Components/UpdatePost/UpdatePost';
 
 const App: React.FC = () => {
   const location = useLocation()
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           </Route>
           <Route path='/post/:id' element={<BlogId />} />
           <Route path='/create' element={<CreatePost />} />
+          <Route path='/update' element={<UpdatePost />} />
           <Route path='login' element={<Login />} />
           <Route path='/register' element={<Registration />} />
           <Route path='*' element={<NotFound />} />

@@ -66,8 +66,19 @@ export const fetchCreate = createAsyncThunk(
   "posts/fetchCreate",
   async (data: any, { rejectWithValue }) => {
     try {
-      console.log()
-      const response = await axios.delete(`/posts`, data).then((res) => res);
+      const response = await axios.post(`/posts`, data).then((res) => res);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchUpdate = createAsyncThunk(
+  "posts/fetchUpdate",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`/posts/${id}`).then((res) => res);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -164,13 +175,24 @@ export const authReducer = createSlice({
     });
     builder.addCase(fetchCreate.fulfilled, (state, action) => {
       state.loading = "succeeded";
-      console.log(action.payload);
     });
     builder.addCase(fetchCreate.rejected, (state, action) => {
       state.loading = "failed";
     });
+    builder.addCase(fetchUpdate.pending, (state) => {
+      state.loading = "pending";
+      state.err = null;
+    });
+    builder.addCase(fetchUpdate.fulfilled, (state, action) => {
+      state.loading = "succeeded";
+      console.log(action.payload);
+    });
+    builder.addCase(fetchUpdate.rejected, (state) => {
+      state.loading = "failed";
+    });
   },
 });
+// fetchUpdate
 // Action creators are generated for each case reducer function
 export const { authChange, removeUserReducer } = authReducer.actions;
 
