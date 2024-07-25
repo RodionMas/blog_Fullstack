@@ -31,6 +31,18 @@ export const fetchTags = createAsyncThunk(
   }
 );
 
+export const fetchGetOnePost = createAsyncThunk(
+  "posts/fetchGetOnePost",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/posts/${id}`).then((res) => res);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState: postsSliceState = {
   tags: [],
   posts: [
@@ -53,6 +65,13 @@ const initialState: postsSliceState = {
   ],
   err: null,
   loading: "idle",
+  updatePost: {
+    title: '',
+    tags: [],
+    text: '',
+    imageUrl: ''
+  },
+  updateUser: undefined
 };
 
 export const postsSlice = createSlice({
@@ -80,6 +99,18 @@ export const postsSlice = createSlice({
       action.payload.map((tags: string) => state.tags.push(tags));
     });
     builder.addCase(fetchTags.rejected, (state) => {
+      state.loading = "failed";
+    });
+    builder.addCase(fetchGetOnePost.pending, (state) => {
+      state.loading = "pending";
+      state.err = null;
+    });
+    builder.addCase(fetchGetOnePost.fulfilled, (state, action) => {
+      state.loading = "succeeded";
+      state.updatePost = action.payload
+      // console.log(state.updatePost)
+    });
+    builder.addCase(fetchGetOnePost.rejected, (state) => {
       state.loading = "failed";
     });
   },

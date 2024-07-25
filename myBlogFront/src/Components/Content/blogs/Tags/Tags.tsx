@@ -17,7 +17,7 @@ const Tags: React.FC = () => {
     <div className="wrapper-tags">
       <h2>Тэги</h2>
       <ul>
-        {uniqTags?.map((el: string, i: number) => {
+        {uniqTags?.reverse().map((el: string, i: number) => {
           return (
             <li key={i} className="tag-list-item">
               <span className="hashtag">

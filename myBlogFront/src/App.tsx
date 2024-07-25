@@ -31,7 +31,7 @@ const App: React.FC = () => {
           </Route>
           <Route path='/post/:id' element={<BlogId />} />
           <Route path='/create' element={<CreatePost />} />
-          <Route path='/update' element={<UpdatePost />} />
+          <Route path='/update/:id' element={<UpdatePost />} />
           <Route path='login' element={<Login />} />
           <Route path='/register' element={<Registration />} />
           <Route path='*' element={<NotFound />} />

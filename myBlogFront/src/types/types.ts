@@ -48,10 +48,12 @@ export type post = {
   _id: string;
 };
 export interface postsSliceState {
+  updateUser: any;
   tags: string[];
   posts: [post];
   err: null | string;
   loading: "idle" | "pending" | "succeeded" | "failed";
+  updatePost: {}
 }
 export type createPost = {
   updatedAt: string;

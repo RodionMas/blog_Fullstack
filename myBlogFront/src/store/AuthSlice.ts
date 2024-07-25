@@ -76,9 +76,11 @@ export const fetchCreate = createAsyncThunk(
 
 export const fetchUpdate = createAsyncThunk(
   "posts/fetchUpdate",
-  async (id: string, { rejectWithValue }) => {
+  async ({id, data}: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`/posts/${id}`).then((res) => res);
+      console.log('id', id)
+      console.log('data', data)
+      const response = await axios.patch(`/posts/${id}`, data).then((res) => res);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -192,7 +194,6 @@ export const authReducer = createSlice({
     });
   },
 });
-// fetchUpdate
 // Action creators are generated for each case reducer function
 export const { authChange, removeUserReducer } = authReducer.actions;
 

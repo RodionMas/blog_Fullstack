@@ -11,7 +11,7 @@ import { post } from "../../../../types/types";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../../../Selectors/selectors";
 import { fetchPosts, useAppDispatch } from "../../../../store/PostsSlice";
-import { fetchRemovePost, fetchUpdate } from "../../../../store/AuthSlice";
+import { fetchRemovePost } from "../../../../store/AuthSlice";
 const Post: React.FC<post> = ({
   _id,
   imageUrl,
@@ -33,7 +33,7 @@ const Post: React.FC<post> = ({
             appDispatch(fetchPosts());
           }
             } src={close} className="close" alt="close" />
-          <Link to={`/update`} onClick={() => appDispatch(fetchUpdate(_id))}>
+          <Link to={`/update/${_id}`}>
             <img src={pencil} className="edit" alt="edit" />
           </Link>
         </div>
