@@ -53,8 +53,8 @@ const Registration: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit( async (data) => {
-        const d = await appDispatch(fetchRegister(data));
-        console.log(d)
+        const register = await appDispatch(fetchRegister(data));
+        // console.log(d)
       })}
     >
       <div className="login-form">

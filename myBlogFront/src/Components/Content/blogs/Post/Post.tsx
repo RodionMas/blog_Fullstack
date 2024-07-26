@@ -22,7 +22,7 @@ const Post: React.FC<post> = ({
   text,
   viewsCount,
 }: post) => {
-  const id: string = useSelector(selectAuth).user?._id;
+  const id: string = useSelector(selectAuth).user._id;
   const appDispatch = useAppDispatch()
   return (
     <div className="blog">

@@ -3,7 +3,8 @@ import { Dispatch, SetStateAction } from "react";
 //login
 export interface loginSliceState {
   user: {
-    [x: string]: string;
+    // [x: string]: string;
+    _id: string;
     email: string;
     password: string;
     fullName: string;
@@ -16,8 +17,15 @@ export interface loginSliceState {
 export type user = {
   email: string;
   password: string;
-};
-//register
+}; 
+export interface LoginResponse {
+  password: string
+  _id: string;
+  avatarUrl: string;
+  email: string;
+  fullName: string;
+  token: string;
+}
 export interface registerSliceState {
   fullName: string;
   email: string;
@@ -26,11 +34,10 @@ export interface registerSliceState {
   err: null | string;
 }
 export type registerUser = {
-  fullName: string;
   email: string;
-  password: string;
+  password: string; // Добавьте это свойство
+  fullName: string;
 };
-//posts
 export type post = {
   createdAt: string;
   imageUrl: string;
@@ -53,7 +60,7 @@ export interface postsSliceState {
   posts: [post];
   err: null | string;
   loading: "idle" | "pending" | "succeeded" | "failed";
-  updatePost: {}
+  updatePost: {};
 }
 export type createPost = {
   updatedAt: string;
@@ -64,8 +71,45 @@ export interface ChildProps {
   setDel: Dispatch<SetStateAction<boolean>>;
 }
 export type createPostData = {
-  title: string,
-  tags: string[],
-  text: string,
-  imageUrl?: string,
+  title: string;
+  tags: string[];
+  text: string;
+  imageUrl?: string;
+};
+export interface GetMe {
+  createdAt: string;
+  email: string;
+  fullName: string;
+  updatedAt: string;
+}
+export interface CreatePostType {
+  title: string;
+  text: string;
+  tags: string[];
+  viewsCount: number;
+  user: string;
+}
+
+export type SuccessType = {
+  success: boolean;
+};
+export interface UpdatePost {
+  id: string | undefined;
+  data: {
+    title: string;
+    tags: string[];
+    text: string;
+    imageUrl?: string;
+  };
+}
+
+export interface RegisterUserResponse {
+  createdAt: string;
+  email: string;
+  fullName: string;
+  passwordHash: string;
+  password: string;
+  token: string;
+  updatedAt: string;
+  _id: string;
 }

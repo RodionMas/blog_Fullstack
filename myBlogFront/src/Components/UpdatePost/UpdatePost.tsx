@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectAuth, selectPosts } from "../../Selectors/selectors";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { fetchGetOnePost, useAppDispatch } from "../../store/PostsSlice";
-import { fetchCreate, fetchUpdate } from "../../store/AuthSlice";
+import { fetchUpdate } from "../../store/AuthSlice";
 import axios from "../../instanceAxios";
 import closeImg from "../../assets/img/close.png";
 import MessageDel from "../MessageDel/MessageDel";
@@ -13,8 +13,8 @@ import { createPostData } from "../../types/types";
 
 const UpdatePost: React.FC = () => {
   type ParamId = {
-    id: string,
-  }
+    id: string;
+  };
   const post: any = useSelector(selectPosts).updatePost;
   const modules = {
     toolbar: [
@@ -45,25 +45,25 @@ const UpdatePost: React.FC = () => {
     "image",
   ];
   const appDispatch = useAppDispatch();
-  const [value, setValue] = React.useState<string>('');
-  const [tags, setTags] = React.useState<string[]>(['']);
-  const [title, setTitle] = React.useState<string>('');
-  const [img, setImg] = React.useState<string>('');
+  const [value, setValue] = React.useState<string>("");
+  const [tags, setTags] = React.useState<string[]>([""]);
+  const [title, setTitle] = React.useState<string>("");
+  const [img, setImg] = React.useState<string>("");
   const [del, setDel] = React.useState<boolean>(false);
   const { token } = useSelector(selectAuth).user;
   const quillRef = React.useRef<any>(null);
   const inpRef = React.useRef<any>(null);
   const navigate = useNavigate();
-  const { id } = useParams<ParamId>()
+  const { id } = useParams<ParamId>();
   React.useEffect(() => {
-    id && appDispatch(fetchGetOnePost(id))
+    id && appDispatch(fetchGetOnePost(id));
     if (post.text) {
-     setValue(post.text)
-     setImg(post.imageUrl)
-     setTitle(post.title)
-     setTags(post.tags.join().replace(/,/g, ' '))
+      setValue(post.text);
+      setImg(post.imageUrl);
+      setTitle(post.title);
+      setTags(post.tags.join().replace(/,/g, " "));
     }
-   }, [post.text]);
+  }, [post.text, appDispatch, id, post.imageUrl, post.tags, post.title]);
   if (!token) {
     return <Navigate to={`/login`} />;
   }
@@ -92,15 +92,15 @@ const UpdatePost: React.FC = () => {
     };
     if (img) {
       postData.imageUrl = `http://localhost:4444${img}`;
-      const data = await appDispatch(fetchUpdate({id: id, data: postData}));
+      const data = await appDispatch(fetchUpdate({ id: id, data: postData }));
       navigate("/new");
       return data;
     }
-    const data = await appDispatch(fetchUpdate({id: id, data: postData}));
+    const data = await appDispatch(fetchUpdate({ id: id, data: postData }));
     navigate("/new");
     return data;
   };
-  
+
   return (
     <div className="create-post">
       <div className="title-block">
@@ -137,9 +137,9 @@ const UpdatePost: React.FC = () => {
           placeholder="Заголовок статьи..."
         />
         <input
-        value={tags}
+          value={tags}
           onChange={(e: any) => {
-            setTags(e.target.value)
+            setTags(e.target.value);
           }}
           className="tags-post-create"
           type="text"

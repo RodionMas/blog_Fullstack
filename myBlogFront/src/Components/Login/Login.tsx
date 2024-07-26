@@ -11,7 +11,6 @@ import { Navigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const appDispatch = useAppDispatch()
-  const dispatch = useDispatch()
   const { isAuth } = useSelector(selectAuth)
   const user = useSelector(selectAuth).user
   const {

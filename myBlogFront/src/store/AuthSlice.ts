@@ -1,22 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createPostData, loginSliceState, registerUser } from "../types/types";
+import {
+  createPostData,
+  CreatePostType,
+  GetMe,
+  LoginResponse,
+  loginSliceState,
+  registerUser,
+  RegisterUserResponse,
+  SuccessType,
+  UpdatePost,
+  user,
+} from "../types/types";
 import axios from "../instanceAxios";
 import { storageUser } from "../StorageUser";
-import { AxiosResponse } from "axios";
 
-type valueType = {
-  email: string;
-  password: string;
-};
-
-export const fetchLogin = createAsyncThunk(
+export const fetchLogin = createAsyncThunk<LoginResponse, user, { rejectValue: string }>(
   "login/fetchLogin",
-  async (value: valueType, { rejectWithValue }) => {
+  async (value, { rejectWithValue }) => {
     try {
       const response = await axios
         .post(`/auth/login/`, value)
         .then((res) => res);
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -24,7 +30,11 @@ export const fetchLogin = createAsyncThunk(
   }
 );
 
-export const fetchRegister = createAsyncThunk(
+export const fetchRegister = createAsyncThunk<
+  RegisterUserResponse,
+  registerUser,
+  { rejectValue: string }
+>(
   "posts/fetchRegister",
   async (register: registerUser, { rejectWithValue }) => {
     try {
@@ -38,55 +48,58 @@ export const fetchRegister = createAsyncThunk(
   }
 );
 
-export const fetchGetMe = createAsyncThunk(
-  "posts/fetchGetMe",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/auth/me`).then((res) => res);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+export const fetchGetMe = createAsyncThunk<
+  GetMe,
+  undefined,
+  { rejectValue: string }
+>("posts/fetchGetMe", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`/auth/me`).then((res) => res);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const fetchRemovePost = createAsyncThunk(
-  "posts/fetchRemovePost",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await axios.delete(`/posts/${id}`).then((res) => res);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+export const fetchRemovePost = createAsyncThunk<
+  SuccessType,
+  string,
+  { rejectValue: string }
+>("posts/fetchRemovePost", async (id, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`/posts/${id}`).then((res) => res);
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const fetchCreate = createAsyncThunk(
-  "posts/fetchCreate",
-  async (data: any, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`/posts`, data).then((res) => res);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+export const fetchCreate = createAsyncThunk<
+  CreatePostType,
+  createPostData,
+  { rejectValue: string }
+>("posts/fetchCreate", async (data, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`/posts`, data).then((res) => res);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
-export const fetchUpdate = createAsyncThunk(
-  "posts/fetchUpdate",
-  async ({id, data}: any, { rejectWithValue }) => {
-    try {
-      console.log('id', id)
-      console.log('data', data)
-      const response = await axios.patch(`/posts/${id}`, data).then((res) => res);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+export const fetchUpdate = createAsyncThunk<
+  SuccessType,
+  UpdatePost,
+  { rejectValue: string }
+>("posts/fetchUpdate", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`/posts/${id}`, data).then((res) => res);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
 const initialState: loginSliceState = {
   user: storageUser(),
@@ -107,9 +120,10 @@ export const authReducer = createSlice({
         email: "",
         password: "",
         fullName: "",
-        token: '',
+        token: "",
+        _id: "",
       };
-    }
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchLogin.pending, (state) => {
@@ -132,8 +146,6 @@ export const authReducer = createSlice({
     });
     builder.addCase(fetchRegister.fulfilled, (state, action) => {
       state.loading = "succeeded";
-      console.log(action.payload);
-
       state.user = action.payload;
       if (state.user) {
         state.isAuth = true;
